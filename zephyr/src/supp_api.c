@@ -158,6 +158,11 @@ int zephyr_supp_connect(const struct device *dev,
 	struct wpa_supplicant *wpa_s;
 	int ret = 0;
 
+	if (!net_if_is_up(net_if_lookup_by_dev(dev))) {
+		wpa_printf(MSG_ERROR, "Interface is down");
+		return -1;
+	}
+
 	k_mutex_lock(&wpa_supplicant_mutex, K_FOREVER);
 
 	wpa_s = get_wpa_s_handle(dev);
